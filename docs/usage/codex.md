@@ -11,7 +11,7 @@ Add to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.memwal]
 command = "npx"
-args = ["-y", "@mysten-incubation/memwal-mcp", "--label", "Codex"]
+args = ["-y", "@mysten-incubation/memwal-mcp@0.0.13", "--label", "Codex"]
 ```
 
 Optional namespace:
@@ -19,7 +19,7 @@ Optional namespace:
 ```toml
 [mcp_servers.memwal]
 command = "npx"
-args = ["-y", "@mysten-incubation/memwal-mcp", "--label", "Codex", "--namespace", "work"]
+args = ["-y", "@mysten-incubation/memwal-mcp@0.0.13", "--label", "Codex", "--namespace", "work"]
 ```
 
 Restart Codex.

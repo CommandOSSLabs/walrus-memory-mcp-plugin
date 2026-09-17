@@ -1,8 +1,24 @@
 #!/usr/bin/env node
 
+import { readFileSync } from "node:fs";
+
 const packageName = "@mysten-incubation/memwal-mcp";
-const minimumVersion = "0.0.7";
+const minimumVersion = "0.0.13";
 const registryUrl = `https://registry.npmjs.org/${encodeURIComponent(packageName)}`;
+
+const mcp = JSON.parse(readFileSync(new URL("../.mcp.json", import.meta.url), "utf8"));
+const pinArg = mcp.mcpServers?.memwal?.args?.find((arg) => arg.startsWith(`${packageName}@`));
+const pinnedVersion = pinArg?.slice(packageName.length + 1);
+
+if (!pinnedVersion || !/^\d+\.\d+\.\d+$/.test(pinnedVersion)) {
+    throw new Error(`.mcp.json must pin ${packageName}@<semver> (WALM-627)`);
+}
+
+if (compareVersions(pinnedVersion, minimumVersion) < 0) {
+    throw new Error(
+        `.mcp.json pins ${packageName}@${pinnedVersion}; marketplace rollout requires ${minimumVersion} or newer`,
+    );
+}
 
 const response = await fetch(registryUrl, {
     headers: { accept: "application/json" },
@@ -22,11 +38,23 @@ if (typeof latest !== "string") {
 
 if (compareVersions(latest, minimumVersion) < 0) {
     throw new Error(
-        `${packageName}@latest is ${latest}; marketplace rollout requires ${minimumVersion} or newer so post-login credentials reload without restarting Claude Code. Merge and release MystenLabs/MemWal#604 first.`,
+        `${packageName}@latest is ${latest}; marketplace rollout requires ${minimumVersion} or newer`,
     );
 }
 
-console.log(`${packageName}@latest ${latest} satisfies >=${minimumVersion}`);
+if (!metadata.versions?.[pinnedVersion]) {
+    throw new Error(`${packageName}@${pinnedVersion} is not published; npx would fail for plugin users`);
+}
+
+if (compareVersions(pinnedVersion, latest) < 0) {
+    console.warn(
+        `${packageName} pin ${pinnedVersion} is behind latest ${latest}; bump .mcp.json when ready`,
+    );
+}
+
+console.log(
+    `${packageName} pin ${pinnedVersion}; npm latest ${latest} satisfies >=${minimumVersion}`,
+);
 
 function compareVersions(left, right) {
     const a = parseStableVersion(left);

@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@mysten-incubation/memwal-mcp",
+        "@mysten-incubation/memwal-mcp@0.0.13",
         "--label",
         "Claude Code Plugin"
       ],

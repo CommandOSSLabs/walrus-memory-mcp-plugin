@@ -1,35 +1,43 @@
 # Walrus Memory Claude Code plugin
 
-Walrus Memory gives Claude Code durable, user-owned memory through the published `@mysten-incubation/memwal-mcp` server.
+Walrus Memory gives Claude Code durable, user-owned memory. This plugin packages the published [`@mysten-incubation/memwal-mcp`](https://www.npmjs.com/package/@mysten-incubation/memwal-mcp) server with setup guidance, slash commands, and lifecycle hooks.
 
-This repository is the marketplace plugin handoff requested for Claude Code. It contains only plugin packaging and user guidance. The MCP SDK source, tests, versioning, and npm release workflow remain canonical in [`MystenLabs/MemWal/packages/mcp`](https://github.com/MystenLabs/MemWal/tree/dev/packages/mcp).
+The MCP runtime, tests, and npm releases stay canonical in [`MystenLabs/MemWal/packages/mcp`](https://github.com/MystenLabs/MemWal/tree/dev/packages/mcp). This repository is plugin packaging only.
 
-## Included
+Publisher: [Mysten Labs](https://mystenlabs.com). Dashboard: [memory.walrus.xyz](https://memory.walrus.xyz). Docs: [Claude Code setup](https://docs.wal.app/walrus-memory/mcp/claude-code).
 
-- Claude Code plugin manifest: `.claude-plugin/plugin.json`
-- MCP server config: `.mcp.json`
-- Slash commands: `commands/`
-- Setup skill: `skills/setup/`
-- Lifecycle hooks: `hooks/hooks.json`
-- Usage documentation: `docs/usage/`
+## Install
 
-The plugin starts the published MCP package with `npx`; this repository does not publish a second SDK package.
+After the plugin is listed in the Claude plugin directory, install **Walrus Memory** from `/plugin` → Discover.
 
-## Validate locally
+To load this repo locally for review:
 
 ```bash
 claude plugin validate . --strict
 claude --plugin-dir .
 ```
 
-Inside Claude Code:
+Then restart Claude Code or run `/reload-plugins`, and confirm `/plugin` and `/mcp` show `memwal`.
+
+MCP-only (tools, no plugin hooks):
+
+```bash
+claude mcp add --scope user memwal -- npx -y @mysten-incubation/memwal-mcp@0.0.13 --label "Claude Code"
+```
+
+## Setup
 
 ```text
 /memwal:setup
-/memwal:health
-/memwal:remember I use Walrus Memory from Claude Code.
-/memwal:recall Claude Code Walrus Memory setup
 ```
+
+`memwal_login` opens the browser wallet flow and stores credentials at `~/.memwal/credentials.json` (mode `0600`). Do not paste that file or its private key into chat.
+
+## Example prompts
+
+1. `Connect Walrus Memory and confirm memwal_health is ok.`
+2. `Remember that I use pnpm and TypeScript strict mode in this project.`
+3. `What package manager and TypeScript settings do I prefer?`
 
 ## Commands
 
@@ -43,19 +51,18 @@ Inside Claude Code:
 
 ## Authentication
 
-The Claude Code plugin uses local stdio MCP and the existing delegate-key login flow. `memwal_login` opens the browser setup flow and stores credentials locally at:
+This plugin uses local stdio MCP and delegate-key login. It does not use the hosted Claude custom-connector OAuth flow.
 
-```text
-~/.memwal/credentials.json
-```
+The hosted connector is a separate remote MCP surface at `https://relayer.memory.walrus.xyz/api/mcp`. See [`docs/usage/hosted-connector.md`](docs/usage/hosted-connector.md).
 
-Do not paste this file or its private key into chat.
+## Privacy and support
 
-The hosted Claude custom connector is a separate remote OAuth surface. See [`docs/usage/hosted-connector.md`](docs/usage/hosted-connector.md).
+Walrus Memory encrypts memories with SEAL and stores them on Walrus. The local MCP process keeps a delegate private key on disk after login so it can sign relayer calls.
 
-## Ownership handoff
-
-This public repository is temporarily hosted under CommandOSSLabs for preparation. It is intended for transfer to MystenLabs before official marketplace submission.
+- Privacy policy: https://docs.wal.app/docs/legal/privacy
+- Terms: https://docs.wal.app/docs/legal/walrus_general_tos
+- Product docs: https://docs.wal.app/walrus-memory/mcp/claude-code
+- Support: open an issue on this repository, or use the [Walrus Memory dashboard](https://memory.walrus.xyz)
 
 ## License
 
