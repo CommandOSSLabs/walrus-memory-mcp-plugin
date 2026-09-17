@@ -4,7 +4,7 @@ Walrus Memory gives Claude Code durable, user-owned memory. This plugin packages
 
 The MCP runtime, tests, and npm releases stay canonical in [`MystenLabs/MemWal/packages/mcp`](https://github.com/MystenLabs/MemWal/tree/dev/packages/mcp). This repository is plugin packaging only.
 
-Publisher: [Mysten Labs](https://mystenlabs.com). Dashboard: [memory.walrus.xyz](https://memory.walrus.xyz). Docs: [Claude Code setup](https://docs.wal.app/walrus-memory/mcp/claude-code).
+Publisher: [Mysten Labs](https://mystenlabs.com). Dashboard: [memory.walrus.xyz](https://memory.walrus.xyz). Docs: [Claude Code setup](https://docs.wal.app/walrus-memory/mcp/claude-code.html).
 
 ## Install
 
@@ -61,7 +61,7 @@ Walrus Memory encrypts memories with SEAL and stores them on Walrus. The local M
 
 - Privacy policy: https://docs.wal.app/docs/legal/privacy
 - Terms: https://docs.wal.app/docs/legal/walrus_general_tos
-- Product docs: https://docs.wal.app/walrus-memory/mcp/claude-code
+- Product docs: https://docs.wal.app/walrus-memory/mcp/claude-code.html
 - Support: open an issue on this repository, or use the [Walrus Memory dashboard](https://memory.walrus.xyz)
 
 ## License
