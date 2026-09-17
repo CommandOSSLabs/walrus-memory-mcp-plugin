@@ -18,7 +18,7 @@ The plugin starts this MCP server:
   "mcpServers": {
     "memwal": {
       "command": "npx",
-      "args": ["-y", "@mysten-incubation/memwal-mcp", "--label", "Claude Code Plugin"]
+      "args": ["-y", "@mysten-incubation/memwal-mcp@0.0.13", "--label", "Claude Code Plugin"]
     }
   }
 }
@@ -50,7 +50,7 @@ Credentials are stored locally at `~/.memwal/credentials.json` with file mode `0
 
 ## Troubleshooting
 
-- If the browser flow finishes but Claude Code still says credentials are missing, restart Claude Code, then call `memwal_health` again. This fallback remains required until the marketplace rollout verifies a published MCP release with live credential reload.
+- If the browser flow finishes but Claude Code still says credentials are missing, restart Claude Code, then call `memwal_health` again.
 - If the wallet already has 20 delegate keys, ask the user to open the Walrus Memory dashboard and revoke an unused key.
 - If the user needs a clean login, call `memwal_logout`, then call `memwal_login` again.
 - If recall returns nothing for memories that should exist, call `memwal_restore` with the relevant namespace.

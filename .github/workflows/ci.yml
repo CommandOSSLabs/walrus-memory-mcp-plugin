@@ -40,8 +40,9 @@ jobs:
           }
           const mcp = JSON.parse(fs.readFileSync('.mcp.json', 'utf8'));
           const server = mcp.mcpServers?.memwal;
-          if (server?.command !== 'npx' || !server.args?.includes('@mysten-incubation/memwal-mcp')) {
-            throw new Error('Plugin must consume the canonical published MCP package');
+          const pin = server?.args?.find((arg) => arg.startsWith('@mysten-incubation/memwal-mcp@'));
+          if (server?.command !== 'npx' || !pin || !/^@mysten-incubation\/memwal-mcp@\d+\.\d+\.\d+$/.test(pin)) {
+            throw new Error('Plugin must pin @mysten-incubation/memwal-mcp@<semver> so npx cannot reuse a stale cache (WALM-627)');
           }
           NODE
       - name: Validate with Claude Code

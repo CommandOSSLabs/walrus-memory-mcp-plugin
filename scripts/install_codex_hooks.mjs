@@ -97,7 +97,7 @@ function ensureMcpRegistered() {
     const block =
         "\n[mcp_servers.memwal]\n" +
         'command = "npx"\n' +
-        'args = ["-y", "@mysten-incubation/memwal-mcp"]\n';
+        'args = ["-y", "@mysten-incubation/memwal-mcp@0.0.13"]\n';
     writeFileSync(CONFIG_FILE, (content.trimEnd() + "\n" + block).trimStart());
     return true;
 }
